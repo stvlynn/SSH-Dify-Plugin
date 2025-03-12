@@ -1,0 +1,735 @@
+app:
+  description: ''
+  icon: ⌨️
+  icon_background: '#EFF1F5'
+  mode: advanced-chat
+  name: ssh plugin demo
+  use_icon_as_answer_icon: false
+dependencies:
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: langgenius/deepseek:0.0.5@fd6efd37c2a931911de8ab9ca3ba2da303bef146d45ee87ad896b04b36d09403
+kind: app
+version: 0.1.5
+workflow:
+  conversation_variables: []
+  environment_variables:
+  - description: ''
+    id: 7710cb19-6f88-4f3a-9e1a-ab335217a10f
+    name: ip
+    selector:
+    - env
+    - ip
+    value: ''
+    value_type: secret
+  - description: ''
+    id: d8f4268e-83ba-4809-8a30-d9ecf167244e
+    name: password
+    selector:
+    - env
+    - password
+    value: ''
+    value_type: secret
+  features:
+    file_upload:
+      allowed_file_extensions: []
+      allowed_file_types:
+      - image
+      - document
+      allowed_file_upload_methods:
+      - remote_url
+      - local_file
+      enabled: true
+      fileUploadConfig:
+        audio_file_size_limit: 50
+        batch_count_limit: 5
+        file_size_limit: 15
+        image_file_size_limit: 5
+        video_file_size_limit: 100
+        workflow_file_upload_limit: 10
+      image:
+        enabled: false
+        number_limits: 3
+        transfer_methods:
+        - local_file
+        - remote_url
+      number_limits: 1
+    opening_statement: ''
+    retriever_resource:
+      enabled: true
+    sensitive_word_avoidance:
+      enabled: false
+    speech_to_text:
+      enabled: false
+    suggested_questions: []
+    suggested_questions_after_answer:
+      enabled: false
+    text_to_speech:
+      enabled: false
+      language: ''
+      voice: ''
+  graph:
+    edges:
+    - data:
+        isInLoop: false
+        sourceType: llm
+        targetType: answer
+      id: 1741762599154-source-answer-target
+      source: '1741762599154'
+      sourceHandle: source
+      target: answer
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: tool
+        targetType: template-transform
+      id: 1741758642806-source-1741762643918-target
+      source: '1741758642806'
+      sourceHandle: source
+      target: '1741762643918'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: template-transform
+        targetType: llm
+      id: 1741762643918-source-1741762599154-target
+      source: '1741762643918'
+      sourceHandle: source
+      target: '1741762599154'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: start
+        targetType: llm
+      id: 1741151965515-source-1741762660793-target
+      source: '1741151965515'
+      sourceHandle: source
+      target: '1741762660793'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: llm
+        targetType: tool
+      id: 1741762660793-source-1741758642806-target
+      source: '1741762660793'
+      sourceHandle: source
+      target: '1741758642806'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    nodes:
+    - data:
+        desc: ''
+        selected: false
+        title: Start
+        type: start
+        variables: []
+      height: 54
+      id: '1741151965515'
+      position:
+        x: 633.0781676272939
+        y: 282
+      positionAbsolute:
+        x: 633.0781676272939
+        y: 282
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        answer: '{{#1741762599154.text#}}'
+        desc: ''
+        selected: false
+        title: Answer
+        type: answer
+        variables: []
+      height: 105
+      id: answer
+      position:
+        x: 2328.122277031426
+        y: 282
+      positionAbsolute:
+        x: 2328.122277031426
+        y: 282
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: ''
+        is_team_authorization: true
+        output_schema: null
+        paramSchemas:
+        - auto_generate: null
+          default: null
+          form: llm
+          human_description:
+            en_US: The hostname or IP address of the remote server
+            ja_JP: The hostname or IP address of the remote server
+            pt_BR: O nome do host ou endereço IP do servidor remoto
+            zh_Hans: 远程服务器的主机名或IP地址
+          label:
+            en_US: Host
+            ja_JP: Host
+            pt_BR: Host
+            zh_Hans: 主机
+          llm_description: The hostname or IP address of the remote server to connect
+            to via SSH.
+          max: null
+          min: null
+          name: host
+          options: []
+          placeholder: null
+          precision: null
+          required: true
+          scope: null
+          template: null
+          type: string
+        - auto_generate: null
+          default: null
+          form: llm
+          human_description:
+            en_US: The SSH port of the remote server (default 22)
+            ja_JP: The SSH port of the remote server (default 22)
+            pt_BR: A porta SSH do servidor remoto (padrão 22)
+            zh_Hans: 远程服务器的SSH端口（默认22）
+          label:
+            en_US: Port
+            ja_JP: Port
+            pt_BR: Porta
+            zh_Hans: 端口
+          llm_description: The SSH port of the remote server. Default is 22.
+          max: null
+          min: null
+          name: port
+          options: []
+          placeholder: null
+          precision: null
+          required: true
+          scope: null
+          template: null
+          type: number
+        - auto_generate: null
+          default: null
+          form: llm
+          human_description:
+            en_US: The username to authenticate with
+            ja_JP: The username to authenticate with
+            pt_BR: O nome de usuário para autenticação
+            zh_Hans: 用于认证的用户名
+          label:
+            en_US: Username
+            ja_JP: Username
+            pt_BR: Nome de usuário
+            zh_Hans: 用户名
+          llm_description: The username to authenticate with on the remote server.
+          max: null
+          min: null
+          name: username
+          options: []
+          placeholder: null
+          precision: null
+          required: true
+          scope: null
+          template: null
+          type: string
+        - auto_generate: null
+          default: password
+          form: form
+          human_description:
+            en_US: Choose between password or private key authentication
+            ja_JP: Choose between password or private key authentication
+            pt_BR: Escolha entre autenticação por senha ou chave privada
+            zh_Hans: 选择密码或私钥认证
+          label:
+            en_US: Authentication Type
+            ja_JP: Authentication Type
+            pt_BR: Tipo de Autenticação
+            zh_Hans: 认证类型
+          llm_description: The authentication method to use (password or private key).
+          max: null
+          min: null
+          name: auth_type
+          options:
+          - label:
+              en_US: Password
+              ja_JP: Password
+              pt_BR: Senha
+              zh_Hans: 密码
+            value: password
+          - label:
+              en_US: Private Key
+              ja_JP: Private Key
+              pt_BR: Chave Privada
+              zh_Hans: 私钥
+            value: key
+          placeholder: null
+          precision: null
+          required: true
+          scope: null
+          template: null
+          type: select
+        - auto_generate: null
+          default: null
+          form: llm
+          human_description:
+            en_US: The password for password authentication (required if auth_type
+              is password)
+            ja_JP: The password for password authentication (required if auth_type
+              is password)
+            pt_BR: A senha para autenticação por senha (obrigatório se o tipo de autenticação
+              for senha)
+            zh_Hans: 用于密码认证的密码（如果认证类型为密码则必填）
+          label:
+            en_US: Password
+            ja_JP: Password
+            pt_BR: Senha
+            zh_Hans: 密码
+          llm_description: The password for password authentication. Required if auth_type
+            is password.
+          max: null
+          min: null
+          name: password
+          options: []
+          placeholder: null
+          precision: null
+          required: false
+          scope: null
+          template: null
+          type: string
+        - auto_generate: null
+          default: null
+          form: llm
+          human_description:
+            en_US: The private key for key authentication (required if auth_type is
+              key)
+            ja_JP: The private key for key authentication (required if auth_type is
+              key)
+            pt_BR: A chave privada para autenticação por chave (obrigatório se o tipo
+              de autenticação for chave)
+            zh_Hans: 用于密钥认证的私钥（如果认证类型为私钥则必填）
+          label:
+            en_US: Private Key
+            ja_JP: Private Key
+            pt_BR: Chave Privada
+            zh_Hans: 私钥
+          llm_description: The private key content for key-based authentication. Required
+            if auth_type is key.
+          max: null
+          min: null
+          name: private_key
+          options: []
+          placeholder: null
+          precision: null
+          required: false
+          scope: null
+          template: null
+          type: string
+        - auto_generate: null
+          default: null
+          form: llm
+          human_description:
+            en_US: The passphrase for the private key (if the key is encrypted)
+            ja_JP: The passphrase for the private key (if the key is encrypted)
+            pt_BR: A frase-senha para a chave privada (se a chave estiver criptografada)
+            zh_Hans: 私钥的密码（如果私钥已加密）
+          label:
+            en_US: Passphrase
+            ja_JP: Passphrase
+            pt_BR: Frase-senha
+            zh_Hans: 密钥口令
+          llm_description: The passphrase for the private key if it is encrypted.
+            Optional.
+          max: null
+          min: null
+          name: passphrase
+          options: []
+          placeholder: null
+          precision: null
+          required: false
+          scope: null
+          template: null
+          type: string
+        - auto_generate: null
+          default: null
+          form: llm
+          human_description:
+            en_US: The command to execute on the remote server
+            ja_JP: The command to execute on the remote server
+            pt_BR: O comando a ser executado no servidor remoto
+            zh_Hans: 在远程服务器上执行的命令
+          label:
+            en_US: Command
+            ja_JP: Command
+            pt_BR: Comando
+            zh_Hans: 命令
+          llm_description: The command to execute on the remote server.
+          max: null
+          min: null
+          name: command
+          options: []
+          placeholder: null
+          precision: null
+          required: true
+          scope: null
+          template: null
+          type: string
+        params:
+          auth_type: ''
+          command: ''
+          host: ''
+          passphrase: ''
+          password: ''
+          port: ''
+          private_key: ''
+          username: ''
+        provider_id: 9dbbe793-60e7-4ec2-8f70-a5b1d699c11d/ssh/ssh
+        provider_name: 9dbbe793-60e7-4ec2-8f70-a5b1d699c11d/ssh/ssh
+        provider_type: builtin
+        selected: true
+        title: SSH Command Execution
+        tool_configurations:
+          auth_type: password
+        tool_label: SSH Command Execution
+        tool_name: ssh
+        tool_parameters:
+          command:
+            type: mixed
+            value: neofetch
+          host:
+            type: mixed
+            value: '{{#env.ip#}}'
+          passphrase:
+            type: mixed
+            value: ''
+          password:
+            type: mixed
+            value: '{{#env.password#}}'
+          port:
+            type: constant
+            value: 22
+          private_key:
+            type: mixed
+            value: ''
+          username:
+            type: mixed
+            value: root
+        type: tool
+      height: 90
+      id: '1741758642806'
+      position:
+        x: 1374.6336360653481
+        y: 282
+      positionAbsolute:
+        x: 1374.6336360653481
+        y: 282
+      selected: true
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: ''
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: deepseek-chat
+          provider: langgenius/deepseek/deepseek
+        prompt_template:
+        - id: dc1d4223-8615-4dd7-96ba-024e42f6d231
+          role: system
+          text: '<instruction>
+
+            You are tasked with providing detailed and accurate answers to user questions
+            based on the SSH input and output provided. Follow these steps to complete
+            the task:
+
+
+            1. **Understand the User''s Question**: Carefully read the user''s question
+            to identify the specific information or clarification they are seeking.
+            Pay attention to any technical terms or context provided.
+
+
+            2. **Analyze the SSH Input and Output**: Review the SSH input (command
+            executed) and the corresponding output (result of the command). Identify
+            any relevant information that directly addresses the user''s question.
+
+
+            3. **Formulate the Answer**: Use the SSH input and output to craft a clear
+            and concise answer. Ensure the answer is technically accurate and directly
+            addresses the user''s question. Avoid including unnecessary details or
+            unrelated information.
+
+
+            4. **Provide Additional Context if Necessary**: If the SSH input and output
+            do not fully answer the user''s question, provide additional context or
+            explanations to help the user understand the situation better. This could
+            include explaining commands, error messages, or system behavior.
+
+
+            5. **Ensure Clarity and Readability**: Write the answer in a way that
+            is easy to understand, even for users who may not be familiar with SSH
+            or the specific commands used. Avoid using overly technical jargon unless
+            necessary.
+
+
+            6. **Output Formatting**: The final output should be in plain text and
+            should not contain any XML tags or other markup. Ensure the answer is
+            well-structured and free of errors.
+
+
+            </instruction>
+
+
+            <examples>
+
+            Here are three examples of how to complete the task:
+
+
+            <example>
+
+            **User Question**: Why did the command `ls -l` return "Permission denied"?
+
+            **SSH Input**: `ls -l /root`
+
+            **SSH Output**: `ls: cannot open directory ''/root'': Permission denied`
+
+            **Answer**: The command `ls -l /root` returned "Permission denied" because
+            the user does not have the necessary permissions to access the `/root`
+            directory. The `/root` directory is typically restricted to the root user,
+            and regular users do not have read permissions by default.
+
+
+            </example>
+
+
+            <example>
+
+            **User Question**: How can I check the disk usage of a specific directory?
+
+            **SSH Input**: `du -sh /var/log`
+
+            **SSH Output**: `4.0G    /var/log`
+
+            **Answer**: To check the disk usage of a specific directory, you can use
+            the `du -sh` command followed by the directory path. In this case, the
+            command `du -sh /var/log` shows that the `/var/log` directory is using
+            4.0 gigabytes of disk space.
+
+
+            </example>
+
+
+            <example>
+
+            **User Question**: What does the error "Connection timed out" mean when
+            trying to SSH into a server?
+
+            **SSH Input**: `ssh user@example.com`
+
+            **SSH Output**: `ssh: connect to host example.com port 22: Connection
+            timed out`
+
+            **Answer**: The error "Connection timed out" indicates that the SSH client
+            was unable to establish a connection to the server at `example.com` on
+            port 22. This could be due to several reasons, such as network issues,
+            the server being down, or a firewall blocking the connection. You may
+            want to check your network connection, ensure the server is running, and
+            verify that port 22 is open and accessible.
+
+
+            </example>
+
+            </examples>
+
+            '
+        - id: 92c9560c-a3d3-47bc-8ef6-0d6c5b20d825
+          role: user
+          text: '<user_query>{{#sys.query#}}</user_query>
+
+            <ssh_input>{{#1741762660793.text#}}</ssh_input>
+
+            <ssh_output>{{#1741762643918.output#}}</ssh_output>'
+        selected: false
+        title: LLM
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 90
+      id: '1741762599154'
+      position:
+        x: 2004.2379930409504
+        y: 282
+      positionAbsolute:
+        x: 2004.2379930409504
+        y: 282
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: ''
+        selected: false
+        template: '{{ arg1 }}'
+        title: Template
+        type: template-transform
+        variables:
+        - value_selector:
+          - '1741758642806'
+          - json
+          variable: arg1
+      height: 54
+      id: '1741762643918'
+      position:
+        x: 1676.1951258771953
+        y: 282
+      positionAbsolute:
+        x: 1676.1951258771953
+        y: 282
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: ''
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: deepseek-chat
+          provider: langgenius/deepseek/deepseek
+        prompt_template:
+        - role: system
+          text: '```xml
+
+            <instruction>
+
+            You are tasked with generating Linux commands based on user requirements.
+            The user will provide a description of what they want to achieve, and
+            you will respond with the appropriate Linux command(s) to accomplish the
+            task. Follow these steps to complete the task:
+
+
+            1. **Understand the Requirement**: Carefully read the user''s description
+            to fully grasp what they want to achieve. Pay attention to any specific
+            details or constraints mentioned.
+
+
+            2. **Identify the Appropriate Command**: Based on the user''s requirement,
+            determine which Linux command(s) would be most suitable. Consider commands
+            for file manipulation, system monitoring, network configuration, etc.
+
+
+            3. **Construct the Command**: Write the command(s) in a way that is clear
+            and executable. Ensure that the command includes any necessary options
+            or arguments to fulfill the user''s requirement.
+
+
+            4. **Verify the Command**: Double-check the command to ensure it is accurate
+            and will perform the intended action without causing unintended side effects.
+
+
+            5. **Provide the Output**: Present the command(s) in a clear and concise
+            manner. Do not include any XML tags in the output.
+
+
+            <examples>
+
+            <example>
+
+            <user_input>I want to list all files in the current directory, including
+            hidden files.</user_input>
+
+            <output>ls -a</output>
+
+            </example>
+
+
+            <example>
+
+            <user_input>I need to find all files modified in the last 7 days in the
+            /var/log directory.</user_input>
+
+            <output>find /var/log -type f -mtime -7</output>
+
+            </example>
+
+
+            <example>
+
+            <user_input>How can I check the disk usage of all directories in the current
+            directory?</user_input>
+
+            <output>du -sh *</output>
+
+            </example>
+
+            </examples>
+
+
+            <additional_instructions>
+
+            - If the user''s requirement is unclear or ambiguous, ask for clarification
+            before providing a command.
+
+            - Ensure that the command is safe to execute and does not pose a risk
+            to the system or data.
+
+            - If multiple commands are needed to achieve the task, list them in the
+            order they should be executed.
+
+            - Avoid using overly complex commands unless absolutely necessary; simplicity
+            and clarity are key.
+
+            </additional_instructions>
+
+            </instruction>
+
+            ```'
+        selected: false
+        title: command generator
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 90
+      id: '1741762660793'
+      position:
+        x: 1045.3715138075167
+        y: 282
+      positionAbsolute:
+        x: 1045.3715138075167
+        y: 282
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    viewport:
+      x: -203.10596273899887
+      y: 240.3866345590443
+      zoom: 0.948684315140453

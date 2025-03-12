@@ -1,0 +1,33 @@
+version: 0.0.1
+type: plugin
+author: stvlynn
+name: ssh
+label:
+  en_US: SSH Command Execution
+  ja_JP: SSHコマンド実行
+  zh_Hans: SSH命令执行
+  pt_BR: Execução de Comando SSH
+description:
+  en_US: Execute commands on remote servers via SSH using password or key-based authentication.
+  ja_JP: パスワードまたは鍵ベースの認証を使用して、SSHを介してリモートサーバーでコマンドを実行します。
+  zh_Hans: 通过SSH使用密码或密钥认证在远程服务器上执行命令。
+  pt_BR: Execute comandos em servidores remotos via SSH usando autenticação por senha ou chave.
+icon: icon.svg
+resource:
+  memory: 268435456
+  permission: {}
+plugins:
+  tools:
+    - provider/ssh.yaml
+meta:
+  version: 0.0.1
+  arch:
+    - amd64
+    - arm64
+  runner:
+    language: python
+    version: "3.12"
+    entrypoint: main
+created_at: 2025-03-12T13:33:38.551835+08:00
+privacy: PRIVACY.md
+verified: false
