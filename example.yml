@@ -9,6 +9,10 @@ dependencies:
 - current_identifier: null
   type: marketplace
   value:
+    marketplace_plugin_unique_identifier: stvlynn/ssh:0.0.1@d2766ba5e973307c812902bea58def8cb1bef7220dab0c6887dc1d74df5b8c6e
+- current_identifier: null
+  type: marketplace
+  value:
     marketplace_plugin_unique_identifier: langgenius/deepseek:0.0.5@fd6efd37c2a931911de8ab9ca3ba2da303bef146d45ee87ad896b04b36d09403
 kind: app
 version: 0.1.5
@@ -45,7 +49,7 @@ workflow:
         audio_file_size_limit: 50
         batch_count_limit: 5
         file_size_limit: 15
-        image_file_size_limit: 5
+        image_file_size_limit: 10
         video_file_size_limit: 100
         workflow_file_upload_limit: 10
       image:
@@ -85,18 +89,6 @@ workflow:
     - data:
         isInIteration: false
         isInLoop: false
-        sourceType: tool
-        targetType: template-transform
-      id: 1741758642806-source-1741762643918-target
-      source: '1741758642806'
-      sourceHandle: source
-      target: '1741762643918'
-      targetHandle: target
-      type: custom
-      zIndex: 0
-    - data:
-        isInIteration: false
-        isInLoop: false
         sourceType: template-transform
         targetType: llm
       id: 1741762643918-source-1741762599154-target
@@ -119,14 +111,24 @@ workflow:
       type: custom
       zIndex: 0
     - data:
-        isInIteration: false
         isInLoop: false
         sourceType: llm
         targetType: tool
-      id: 1741762660793-source-1741758642806-target
+      id: 1741762660793-source-1741779847774-target
       source: '1741762660793'
       sourceHandle: source
-      target: '1741758642806'
+      target: '1741779847774'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: tool
+        targetType: template-transform
+      id: 1741779847774-source-1741762643918-target
+      source: '1741779847774'
+      sourceHandle: source
+      target: '1741762643918'
       targetHandle: target
       type: custom
       zIndex: 0
@@ -166,6 +168,294 @@ workflow:
         x: 2328.122277031426
         y: 282
       selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: ''
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: deepseek-chat
+          provider: langgenius/deepseek/deepseek
+        prompt_template:
+        - id: dc1d4223-8615-4dd7-96ba-024e42f6d231
+          role: system
+          text: '<instruction>
+
+            You are tasked with providing detailed and accurate answers to user questions
+            based on the SSH input and output provided. Follow these steps to complete
+            the task:
+
+
+            1. **Understand the User''s Question**: Carefully read the user''s question
+            to identify the specific information or clarification they are seeking.
+            Pay attention to any technical terms or context provided.
+
+
+            2. **Analyze the SSH Input and Output**: Review the SSH input (command
+            executed) and the corresponding output (result of the command). Identify
+            any relevant information that directly addresses the user''s question.
+
+
+            3. **Formulate the Answer**: Use the SSH input and output to craft a clear
+            and concise answer. Ensure the answer is technically accurate and directly
+            addresses the user''s question. Avoid including unnecessary details or
+            unrelated information.
+
+
+            4. **Provide Additional Context if Necessary**: If the SSH input and output
+            do not fully answer the user''s question, provide additional context or
+            explanations to help the user understand the situation better. This could
+            include explaining commands, error messages, or system behavior.
+
+
+            5. **Ensure Clarity and Readability**: Write the answer in a way that
+            is easy to understand, even for users who may not be familiar with SSH
+            or the specific commands used. Avoid using overly technical jargon unless
+            necessary.
+
+
+            6. **Output Formatting**: The final output should be in plain text and
+            should not contain any XML tags or other markup. Ensure the answer is
+            well-structured and free of errors.
+
+
+            </instruction>
+
+
+            <examples>
+
+            Here are three examples of how to complete the task:
+
+
+            <example>
+
+            **User Question**: Why did the command `ls -l` return "Permission denied"?
+
+            **SSH Input**: `ls -l /root`
+
+            **SSH Output**: `ls: cannot open directory ''/root'': Permission denied`
+
+            **Answer**: The command `ls -l /root` returned "Permission denied" because
+            the user does not have the necessary permissions to access the `/root`
+            directory. The `/root` directory is typically restricted to the root user,
+            and regular users do not have read permissions by default.
+
+
+            </example>
+
+
+            <example>
+
+            **User Question**: How can I check the disk usage of a specific directory?
+
+            **SSH Input**: `du -sh /var/log`
+
+            **SSH Output**: `4.0G    /var/log`
+
+            **Answer**: To check the disk usage of a specific directory, you can use
+            the `du -sh` command followed by the directory path. In this case, the
+            command `du -sh /var/log` shows that the `/var/log` directory is using
+            4.0 gigabytes of disk space.
+
+
+            </example>
+
+
+            <example>
+
+            **User Question**: What does the error "Connection timed out" mean when
+            trying to SSH into a server?
+
+            **SSH Input**: `ssh user@example.com`
+
+            **SSH Output**: `ssh: connect to host example.com port 22: Connection
+            timed out`
+
+            **Answer**: The error "Connection timed out" indicates that the SSH client
+            was unable to establish a connection to the server at `example.com` on
+            port 22. This could be due to several reasons, such as network issues,
+            the server being down, or a firewall blocking the connection. You may
+            want to check your network connection, ensure the server is running, and
+            verify that port 22 is open and accessible.
+
+
+            </example>
+
+            </examples>
+
+            '
+        - id: 92c9560c-a3d3-47bc-8ef6-0d6c5b20d825
+          role: user
+          text: '<user_query>{{#sys.query#}}</user_query>
+
+            <ssh_input>{{#1741762660793.text#}}</ssh_input>
+
+            <ssh_output>{{#1741762643918.output#}}</ssh_output>'
+        selected: false
+        title: LLM
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 90
+      id: '1741762599154'
+      position:
+        x: 2004.2379930409504
+        y: 282
+      positionAbsolute:
+        x: 2004.2379930409504
+        y: 282
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: ''
+        selected: false
+        template: '{{ arg1 }}'
+        title: Template
+        type: template-transform
+        variables:
+        - value_selector:
+          - '1741779847774'
+          - json
+          variable: arg1
+      height: 54
+      id: '1741762643918'
+      position:
+        x: 1676.1951258771953
+        y: 282
+      positionAbsolute:
+        x: 1676.1951258771953
+        y: 282
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: ''
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: deepseek-chat
+          provider: langgenius/deepseek/deepseek
+        prompt_template:
+        - id: 5f0ec1e8-3d55-446a-a765-fee26c79df7f
+          role: system
+          text: '```xml
+
+            <instruction>
+
+            You are tasked with generating Linux commands based on user requirements.
+            The user will provide a description of what they want to achieve, and
+            you will respond with the appropriate Linux command(s) to accomplish the
+            task. Follow these steps to complete the task:
+
+
+            1. **Understand the Requirement**: Carefully read the user''s description
+            to fully grasp what they want to achieve. Pay attention to any specific
+            details or constraints mentioned.
+
+
+            2. **Identify the Appropriate Command**: Based on the user''s requirement,
+            determine which Linux command(s) would be most suitable. Consider commands
+            for file manipulation, system monitoring, network configuration, etc.
+
+
+            3. **Construct the Command**: Write the command(s) in a way that is clear
+            and executable. Ensure that the command includes any necessary options
+            or arguments to fulfill the user''s requirement.
+
+
+            4. **Verify the Command**: Double-check the command to ensure it is accurate
+            and will perform the intended action without causing unintended side effects.
+
+
+            5. **Provide the Output**: Present the command(s) in a clear and concise
+            manner. Do not include any XML tags in the output.
+
+
+            <examples>
+
+            <example>
+
+            <user_input>I want to list all files in the current directory, including
+            hidden files.</user_input>
+
+            <output>ls -a</output>
+
+            </example>
+
+
+            <example>
+
+            <user_input>I need to find all files modified in the last 7 days in the
+            /var/log directory.</user_input>
+
+            <output>find /var/log -type f -mtime -7</output>
+
+            </example>
+
+
+            <example>
+
+            <user_input>How can I check the disk usage of all directories in the current
+            directory?</user_input>
+
+            <output>du -sh *</output>
+
+            </example>
+
+            </examples>
+
+
+            <additional_instructions>
+
+            - If the user''s requirement is unclear or ambiguous, ask for clarification
+            before providing a command.
+
+            - Ensure that the command is safe to execute and does not pose a risk
+            to the system or data.
+
+            - If multiple commands are needed to achieve the task, list them in the
+            order they should be executed.
+
+            - Avoid using overly complex commands unless absolutely necessary; simplicity
+            and clarity are key.
+
+            </additional_instructions>
+
+            </instruction>
+
+            ```'
+        selected: false
+        title: command generator
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 90
+      id: '1741762660793'
+      position:
+        x: 1045.3715138075167
+        y: 282
+      positionAbsolute:
+        x: 1045.3715138075167
+        y: 282
+      selected: true
       sourcePosition: right
       targetPosition: left
       type: custom
@@ -398,10 +688,10 @@ workflow:
           port: ''
           private_key: ''
           username: ''
-        provider_id: 9dbbe793-60e7-4ec2-8f70-a5b1d699c11d/ssh/ssh
-        provider_name: 9dbbe793-60e7-4ec2-8f70-a5b1d699c11d/ssh/ssh
+        provider_id: stvlynn/ssh/ssh
+        provider_name: stvlynn/ssh/ssh
         provider_type: builtin
-        selected: true
+        selected: false
         title: SSH Command Execution
         tool_configurations:
           auth_type: password
@@ -410,326 +700,31 @@ workflow:
         tool_parameters:
           command:
             type: mixed
-            value: neofetch
+            value: '{{#1741762660793.text#}}'
           host:
             type: mixed
             value: '{{#env.ip#}}'
-          passphrase:
-            type: mixed
-            value: ''
           password:
             type: mixed
             value: '{{#env.password#}}'
           port:
             type: constant
             value: 22
-          private_key:
-            type: mixed
-            value: ''
-          username:
-            type: mixed
-            value: root
         type: tool
       height: 90
-      id: '1741758642806'
+      id: '1741779847774'
       position:
-        x: 1374.6336360653481
+        x: 1363.0519047292926
         y: 282
       positionAbsolute:
-        x: 1374.6336360653481
-        y: 282
-      selected: true
-      sourcePosition: right
-      targetPosition: left
-      type: custom
-      width: 244
-    - data:
-        context:
-          enabled: false
-          variable_selector: []
-        desc: ''
-        model:
-          completion_params:
-            temperature: 0.7
-          mode: chat
-          name: deepseek-chat
-          provider: langgenius/deepseek/deepseek
-        prompt_template:
-        - id: dc1d4223-8615-4dd7-96ba-024e42f6d231
-          role: system
-          text: '<instruction>
-
-            You are tasked with providing detailed and accurate answers to user questions
-            based on the SSH input and output provided. Follow these steps to complete
-            the task:
-
-
-            1. **Understand the User''s Question**: Carefully read the user''s question
-            to identify the specific information or clarification they are seeking.
-            Pay attention to any technical terms or context provided.
-
-
-            2. **Analyze the SSH Input and Output**: Review the SSH input (command
-            executed) and the corresponding output (result of the command). Identify
-            any relevant information that directly addresses the user''s question.
-
-
-            3. **Formulate the Answer**: Use the SSH input and output to craft a clear
-            and concise answer. Ensure the answer is technically accurate and directly
-            addresses the user''s question. Avoid including unnecessary details or
-            unrelated information.
-
-
-            4. **Provide Additional Context if Necessary**: If the SSH input and output
-            do not fully answer the user''s question, provide additional context or
-            explanations to help the user understand the situation better. This could
-            include explaining commands, error messages, or system behavior.
-
-
-            5. **Ensure Clarity and Readability**: Write the answer in a way that
-            is easy to understand, even for users who may not be familiar with SSH
-            or the specific commands used. Avoid using overly technical jargon unless
-            necessary.
-
-
-            6. **Output Formatting**: The final output should be in plain text and
-            should not contain any XML tags or other markup. Ensure the answer is
-            well-structured and free of errors.
-
-
-            </instruction>
-
-
-            <examples>
-
-            Here are three examples of how to complete the task:
-
-
-            <example>
-
-            **User Question**: Why did the command `ls -l` return "Permission denied"?
-
-            **SSH Input**: `ls -l /root`
-
-            **SSH Output**: `ls: cannot open directory ''/root'': Permission denied`
-
-            **Answer**: The command `ls -l /root` returned "Permission denied" because
-            the user does not have the necessary permissions to access the `/root`
-            directory. The `/root` directory is typically restricted to the root user,
-            and regular users do not have read permissions by default.
-
-
-            </example>
-
-
-            <example>
-
-            **User Question**: How can I check the disk usage of a specific directory?
-
-            **SSH Input**: `du -sh /var/log`
-
-            **SSH Output**: `4.0G    /var/log`
-
-            **Answer**: To check the disk usage of a specific directory, you can use
-            the `du -sh` command followed by the directory path. In this case, the
-            command `du -sh /var/log` shows that the `/var/log` directory is using
-            4.0 gigabytes of disk space.
-
-
-            </example>
-
-
-            <example>
-
-            **User Question**: What does the error "Connection timed out" mean when
-            trying to SSH into a server?
-
-            **SSH Input**: `ssh user@example.com`
-
-            **SSH Output**: `ssh: connect to host example.com port 22: Connection
-            timed out`
-
-            **Answer**: The error "Connection timed out" indicates that the SSH client
-            was unable to establish a connection to the server at `example.com` on
-            port 22. This could be due to several reasons, such as network issues,
-            the server being down, or a firewall blocking the connection. You may
-            want to check your network connection, ensure the server is running, and
-            verify that port 22 is open and accessible.
-
-
-            </example>
-
-            </examples>
-
-            '
-        - id: 92c9560c-a3d3-47bc-8ef6-0d6c5b20d825
-          role: user
-          text: '<user_query>{{#sys.query#}}</user_query>
-
-            <ssh_input>{{#1741762660793.text#}}</ssh_input>
-
-            <ssh_output>{{#1741762643918.output#}}</ssh_output>'
-        selected: false
-        title: LLM
-        type: llm
-        variables: []
-        vision:
-          enabled: false
-      height: 90
-      id: '1741762599154'
-      position:
-        x: 2004.2379930409504
-        y: 282
-      positionAbsolute:
-        x: 2004.2379930409504
+        x: 1363.0519047292926
         y: 282
       selected: false
-      sourcePosition: right
-      targetPosition: left
-      type: custom
-      width: 244
-    - data:
-        desc: ''
-        selected: false
-        template: '{{ arg1 }}'
-        title: Template
-        type: template-transform
-        variables:
-        - value_selector:
-          - '1741758642806'
-          - json
-          variable: arg1
-      height: 54
-      id: '1741762643918'
-      position:
-        x: 1676.1951258771953
-        y: 282
-      positionAbsolute:
-        x: 1676.1951258771953
-        y: 282
-      selected: false
-      sourcePosition: right
-      targetPosition: left
-      type: custom
-      width: 244
-    - data:
-        context:
-          enabled: false
-          variable_selector: []
-        desc: ''
-        model:
-          completion_params:
-            temperature: 0.7
-          mode: chat
-          name: deepseek-chat
-          provider: langgenius/deepseek/deepseek
-        prompt_template:
-        - role: system
-          text: '```xml
-
-            <instruction>
-
-            You are tasked with generating Linux commands based on user requirements.
-            The user will provide a description of what they want to achieve, and
-            you will respond with the appropriate Linux command(s) to accomplish the
-            task. Follow these steps to complete the task:
-
-
-            1. **Understand the Requirement**: Carefully read the user''s description
-            to fully grasp what they want to achieve. Pay attention to any specific
-            details or constraints mentioned.
-
-
-            2. **Identify the Appropriate Command**: Based on the user''s requirement,
-            determine which Linux command(s) would be most suitable. Consider commands
-            for file manipulation, system monitoring, network configuration, etc.
-
-
-            3. **Construct the Command**: Write the command(s) in a way that is clear
-            and executable. Ensure that the command includes any necessary options
-            or arguments to fulfill the user''s requirement.
-
-
-            4. **Verify the Command**: Double-check the command to ensure it is accurate
-            and will perform the intended action without causing unintended side effects.
-
-
-            5. **Provide the Output**: Present the command(s) in a clear and concise
-            manner. Do not include any XML tags in the output.
-
-
-            <examples>
-
-            <example>
-
-            <user_input>I want to list all files in the current directory, including
-            hidden files.</user_input>
-
-            <output>ls -a</output>
-
-            </example>
-
-
-            <example>
-
-            <user_input>I need to find all files modified in the last 7 days in the
-            /var/log directory.</user_input>
-
-            <output>find /var/log -type f -mtime -7</output>
-
-            </example>
-
-
-            <example>
-
-            <user_input>How can I check the disk usage of all directories in the current
-            directory?</user_input>
-
-            <output>du -sh *</output>
-
-            </example>
-
-            </examples>
-
-
-            <additional_instructions>
-
-            - If the user''s requirement is unclear or ambiguous, ask for clarification
-            before providing a command.
-
-            - Ensure that the command is safe to execute and does not pose a risk
-            to the system or data.
-
-            - If multiple commands are needed to achieve the task, list them in the
-            order they should be executed.
-
-            - Avoid using overly complex commands unless absolutely necessary; simplicity
-            and clarity are key.
-
-            </additional_instructions>
-
-            </instruction>
-
-            ```'
-        selected: false
-        title: command generator
-        type: llm
-        variables: []
-        vision:
-          enabled: false
-      height: 90
-      id: '1741762660793'
-      position:
-        x: 1045.3715138075167
-        y: 282
-      positionAbsolute:
-        x: 1045.3715138075167
-        y: 282
       sourcePosition: right
       targetPosition: left
       type: custom
       width: 244
     viewport:
-      x: -203.10596273899887
-      y: 240.3866345590443
-      zoom: 0.948684315140453
+      x: -658.965055320707
+      y: 38.59236485753371
+      zoom: 1.2869892473012692
