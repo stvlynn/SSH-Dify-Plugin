@@ -17,7 +17,23 @@ dependencies:
 kind: app
 version: 0.1.5
 workflow:
-  conversation_variables: []
+  conversation_variables:
+  - description: ''
+    id: 039b54c6-6dbe-4df0-9aca-ab1b6f6c2aef
+    name: ssh_input
+    selector:
+    - conversation
+    - ssh_input
+    value: no ssh execution yet
+    value_type: string
+  - description: ''
+    id: 8d37edfd-858f-419e-b723-ede2d656a1af
+    name: ssh_output
+    selector:
+    - conversation
+    - ssh_output
+    value: no ssh execution yet
+    value_type: string
   environment_variables:
   - description: ''
     id: 7710cb19-6f88-4f3a-9e1a-ab335217a10f
@@ -77,10 +93,72 @@ workflow:
     edges:
     - data:
         isInLoop: false
+        sourceType: start
+        targetType: loop
+      id: 1741151965515-source-1741780220538-target
+      source: '1741151965515'
+      sourceHandle: source
+      target: '1741780220538'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: true
+        loop_id: '1741780220538'
+        sourceType: tool
+        targetType: template-transform
+      id: 1741780255549-source-1741780379632-target
+      source: '1741780255549'
+      sourceHandle: source
+      target: '1741780379632'
+      targetHandle: target
+      type: custom
+      zIndex: 1002
+    - data:
+        isInIteration: false
+        isInLoop: true
+        loop_id: '1741780220538'
+        sourceType: template-transform
+        targetType: assigner
+      id: 1741780379632-source-1741780603482-target
+      source: '1741780379632'
+      sourceHandle: source
+      target: '1741780603482'
+      targetHandle: target
+      type: custom
+      zIndex: 1002
+    - data:
+        isInIteration: false
+        isInLoop: true
+        loop_id: '1741780220538'
+        sourceType: assigner
+        targetType: llm
+      id: 1741780603482-source-1741780349167-target
+      source: '1741780603482'
+      sourceHandle: source
+      target: '1741780349167'
+      targetHandle: target
+      type: custom
+      zIndex: 1002
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: loop
+        targetType: llm
+      id: 1741780220538-source-1741780669933-target
+      source: '1741780220538'
+      sourceHandle: source
+      target: '1741780669933'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
         sourceType: llm
         targetType: answer
-      id: 1741762599154-source-answer-target
-      source: '1741762599154'
+      id: 1741780669933-source-answer-target
+      source: '1741780669933'
       sourceHandle: source
       target: answer
       targetHandle: target
@@ -88,50 +166,30 @@ workflow:
       zIndex: 0
     - data:
         isInIteration: false
-        isInLoop: false
-        sourceType: template-transform
+        isInLoop: true
+        loop_id: '1741780220538'
+        sourceType: loop-start
         targetType: llm
-      id: 1741762643918-source-1741762599154-target
-      source: '1741762643918'
+      id: 1741780220538start-source-1741780838558-target
+      source: 1741780220538start
       sourceHandle: source
-      target: '1741762599154'
+      target: '1741780838558'
       targetHandle: target
       type: custom
-      zIndex: 0
+      zIndex: 1002
     - data:
         isInIteration: false
-        isInLoop: false
-        sourceType: start
-        targetType: llm
-      id: 1741151965515-source-1741762660793-target
-      source: '1741151965515'
-      sourceHandle: source
-      target: '1741762660793'
-      targetHandle: target
-      type: custom
-      zIndex: 0
-    - data:
-        isInLoop: false
+        isInLoop: true
+        loop_id: '1741780220538'
         sourceType: llm
         targetType: tool
-      id: 1741762660793-source-1741779847774-target
-      source: '1741762660793'
+      id: 1741780838558-source-1741780255549-target
+      source: '1741780838558'
       sourceHandle: source
-      target: '1741779847774'
+      target: '1741780255549'
       targetHandle: target
       type: custom
-      zIndex: 0
-    - data:
-        isInLoop: false
-        sourceType: tool
-        targetType: template-transform
-      id: 1741779847774-source-1741762643918-target
-      source: '1741779847774'
-      sourceHandle: source
-      target: '1741762643918'
-      targetHandle: target
-      type: custom
-      zIndex: 0
+      zIndex: 1002
     nodes:
     - data:
         desc: ''
@@ -153,7 +211,7 @@ workflow:
       type: custom
       width: 244
     - data:
-        answer: '{{#1741762599154.text#}}'
+        answer: '{{#1741780669933.text#}}'
         desc: ''
         selected: false
         title: Answer
@@ -162,307 +220,77 @@ workflow:
       height: 105
       id: answer
       position:
-        x: 2328.122277031426
-        y: 282
+        x: 2963.417348595561
+        y: 229.81504769294605
       positionAbsolute:
-        x: 2328.122277031426
-        y: 282
+        x: 2963.417348595561
+        y: 229.81504769294605
       selected: false
       sourcePosition: right
       targetPosition: left
       type: custom
       width: 244
     - data:
-        context:
-          enabled: false
-          variable_selector: []
+        break_conditions:
+        - comparison_operator: is
+          id: 1cf3ba9efdd64ff1972909812134aa17
+          value: 'true'
+          varType: string
+          variable_selector:
+          - '1741780349167'
+          - text
         desc: ''
-        model:
-          completion_params:
-            temperature: 0.7
-          mode: chat
-          name: deepseek-chat
-          provider: langgenius/deepseek/deepseek
-        prompt_template:
-        - id: dc1d4223-8615-4dd7-96ba-024e42f6d231
-          role: system
-          text: '<instruction>
-
-            You are tasked with providing detailed and accurate answers to user questions
-            based on the SSH input and output provided. Follow these steps to complete
-            the task:
-
-
-            1. **Understand the User''s Question**: Carefully read the user''s question
-            to identify the specific information or clarification they are seeking.
-            Pay attention to any technical terms or context provided.
-
-
-            2. **Analyze the SSH Input and Output**: Review the SSH input (command
-            executed) and the corresponding output (result of the command). Identify
-            any relevant information that directly addresses the user''s question.
-
-
-            3. **Formulate the Answer**: Use the SSH input and output to craft a clear
-            and concise answer. Ensure the answer is technically accurate and directly
-            addresses the user''s question. Avoid including unnecessary details or
-            unrelated information.
-
-
-            4. **Provide Additional Context if Necessary**: If the SSH input and output
-            do not fully answer the user''s question, provide additional context or
-            explanations to help the user understand the situation better. This could
-            include explaining commands, error messages, or system behavior.
-
-
-            5. **Ensure Clarity and Readability**: Write the answer in a way that
-            is easy to understand, even for users who may not be familiar with SSH
-            or the specific commands used. Avoid using overly technical jargon unless
-            necessary.
-
-
-            6. **Output Formatting**: The final output should be in plain text and
-            should not contain any XML tags or other markup. Ensure the answer is
-            well-structured and free of errors.
-
-
-            </instruction>
-
-
-            <examples>
-
-            Here are three examples of how to complete the task:
-
-
-            <example>
-
-            **User Question**: Why did the command `ls -l` return "Permission denied"?
-
-            **SSH Input**: `ls -l /root`
-
-            **SSH Output**: `ls: cannot open directory ''/root'': Permission denied`
-
-            **Answer**: The command `ls -l /root` returned "Permission denied" because
-            the user does not have the necessary permissions to access the `/root`
-            directory. The `/root` directory is typically restricted to the root user,
-            and regular users do not have read permissions by default.
-
-
-            </example>
-
-
-            <example>
-
-            **User Question**: How can I check the disk usage of a specific directory?
-
-            **SSH Input**: `du -sh /var/log`
-
-            **SSH Output**: `4.0G    /var/log`
-
-            **Answer**: To check the disk usage of a specific directory, you can use
-            the `du -sh` command followed by the directory path. In this case, the
-            command `du -sh /var/log` shows that the `/var/log` directory is using
-            4.0 gigabytes of disk space.
-
-
-            </example>
-
-
-            <example>
-
-            **User Question**: What does the error "Connection timed out" mean when
-            trying to SSH into a server?
-
-            **SSH Input**: `ssh user@example.com`
-
-            **SSH Output**: `ssh: connect to host example.com port 22: Connection
-            timed out`
-
-            **Answer**: The error "Connection timed out" indicates that the SSH client
-            was unable to establish a connection to the server at `example.com` on
-            port 22. This could be due to several reasons, such as network issues,
-            the server being down, or a firewall blocking the connection. You may
-            want to check your network connection, ensure the server is running, and
-            verify that port 22 is open and accessible.
-
-
-            </example>
-
-            </examples>
-
-            '
-        - id: 92c9560c-a3d3-47bc-8ef6-0d6c5b20d825
-          role: user
-          text: '<user_query>{{#sys.query#}}</user_query>
-
-            <ssh_input>{{#1741762660793.text#}}</ssh_input>
-
-            <ssh_output>{{#1741762643918.output#}}</ssh_output>'
+        error_handle_mode: terminated
+        height: 561
+        logical_operator: and
+        loop_count: 10
         selected: false
-        title: LLM
-        type: llm
-        variables: []
-        vision:
-          enabled: false
-      height: 90
-      id: '1741762599154'
+        start_node_id: 1741780220538start
+        title: Loop
+        type: loop
+        width: 1571
+      height: 561
+      id: '1741780220538'
       position:
-        x: 2004.2379930409504
-        y: 282
+        x: 1043.056952429456
+        y: 229.81504769294605
       positionAbsolute:
-        x: 2004.2379930409504
-        y: 282
+        x: 1043.056952429456
+        y: 229.81504769294605
       selected: false
       sourcePosition: right
       targetPosition: left
       type: custom
-      width: 244
+      width: 1571
+      zIndex: 1
     - data:
         desc: ''
+        isInLoop: true
         selected: false
-        template: '{{ arg1 }}'
-        title: Template
-        type: template-transform
-        variables:
-        - value_selector:
-          - '1741779847774'
-          - json
-          variable: arg1
-      height: 54
-      id: '1741762643918'
+        title: ''
+        type: loop-start
+      draggable: false
+      height: 48
+      id: 1741780220538start
+      parentId: '1741780220538'
       position:
-        x: 1676.1951258771953
-        y: 282
+        x: 24
+        y: 68
       positionAbsolute:
-        x: 1676.1951258771953
-        y: 282
-      selected: false
+        x: 1067.056952429456
+        y: 297.81504769294605
+      selectable: false
       sourcePosition: right
       targetPosition: left
-      type: custom
-      width: 244
-    - data:
-        context:
-          enabled: false
-          variable_selector: []
-        desc: ''
-        model:
-          completion_params:
-            temperature: 0.7
-          mode: chat
-          name: deepseek-chat
-          provider: langgenius/deepseek/deepseek
-        prompt_template:
-        - id: 5f0ec1e8-3d55-446a-a765-fee26c79df7f
-          role: system
-          text: '```xml
-
-            <instruction>
-
-            You are tasked with generating Linux commands based on user requirements.
-            The user will provide a description of what they want to achieve, and
-            you will respond with the appropriate Linux command(s) to accomplish the
-            task. Follow these steps to complete the task:
-
-
-            1. **Understand the Requirement**: Carefully read the user''s description
-            to fully grasp what they want to achieve. Pay attention to any specific
-            details or constraints mentioned.
-
-
-            2. **Identify the Appropriate Command**: Based on the user''s requirement,
-            determine which Linux command(s) would be most suitable. Consider commands
-            for file manipulation, system monitoring, network configuration, etc.
-
-
-            3. **Construct the Command**: Write the command(s) in a way that is clear
-            and executable. Ensure that the command includes any necessary options
-            or arguments to fulfill the user''s requirement.
-
-
-            4. **Verify the Command**: Double-check the command to ensure it is accurate
-            and will perform the intended action without causing unintended side effects.
-
-
-            5. **Provide the Output**: Present the command(s) in a clear and concise
-            manner. Do not include any XML tags in the output.
-
-
-            <examples>
-
-            <example>
-
-            <user_input>I want to list all files in the current directory, including
-            hidden files.</user_input>
-
-            <output>ls -a</output>
-
-            </example>
-
-
-            <example>
-
-            <user_input>I need to find all files modified in the last 7 days in the
-            /var/log directory.</user_input>
-
-            <output>find /var/log -type f -mtime -7</output>
-
-            </example>
-
-
-            <example>
-
-            <user_input>How can I check the disk usage of all directories in the current
-            directory?</user_input>
-
-            <output>du -sh *</output>
-
-            </example>
-
-            </examples>
-
-
-            <additional_instructions>
-
-            - If the user''s requirement is unclear or ambiguous, ask for clarification
-            before providing a command.
-
-            - Ensure that the command is safe to execute and does not pose a risk
-            to the system or data.
-
-            - If multiple commands are needed to achieve the task, list them in the
-            order they should be executed.
-
-            - Avoid using overly complex commands unless absolutely necessary; simplicity
-            and clarity are key.
-
-            </additional_instructions>
-
-            </instruction>
-
-            ```'
-        selected: false
-        title: command generator
-        type: llm
-        variables: []
-        vision:
-          enabled: false
-      height: 90
-      id: '1741762660793'
-      position:
-        x: 1045.3715138075167
-        y: 282
-      positionAbsolute:
-        x: 1045.3715138075167
-        y: 282
-      selected: true
-      sourcePosition: right
-      targetPosition: left
-      type: custom
-      width: 244
+      type: custom-loop-start
+      width: 44
+      zIndex: 1002
     - data:
         desc: ''
+        isInIteration: false
+        isInLoop: true
         is_team_authorization: true
+        loop_id: '1741780220538'
         output_schema: null
         paramSchemas:
         - auto_generate: null
@@ -700,7 +528,7 @@ workflow:
         tool_parameters:
           command:
             type: mixed
-            value: '{{#1741762660793.text#}}'
+            value: '{{#1741780838558.text#}}'
           host:
             type: mixed
             value: '{{#env.ip#}}'
@@ -710,21 +538,454 @@ workflow:
           port:
             type: constant
             value: 22
+          username:
+            type: mixed
+            value: root
         type: tool
       height: 90
-      id: '1741779847774'
+      id: '1741780255549'
+      parentId: '1741780220538'
       position:
-        x: 1363.0519047292926
-        y: 282
+        x: 460.3613871233988
+        y: 71.40336645480784
       positionAbsolute:
-        x: 1363.0519047292926
-        y: 282
+        x: 1503.4183395528548
+        y: 301.2184141477539
+      selected: true
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+      zIndex: 1002
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: ''
+        isInIteration: false
+        isInLoop: true
+        loop_id: '1741780220538'
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: deepseek-chat
+          provider: langgenius/deepseek/deepseek
+        prompt_template:
+        - id: 31d941cd-e0e4-4303-9ecb-b5fb633ba8b7
+          role: system
+          text: '<instruction>
+
+            You are tasked with determining whether a user''s requested task has been
+            completed based on the user''s request, SSH input, and SSH output. Your
+            goal is to analyze the provided information and output "true" if the task
+            is completed, or "false" if it is not. Follow the steps below to complete
+            the task:
+
+
+            1. **Understand the User Request**: Carefully read the user''s request
+            to identify the specific task they are trying to accomplish. This will
+            serve as the reference point for determining completion.
+
+
+            2. **Analyze SSH Input**: Review the SSH input provided. This represents
+            the commands or actions executed by the user. Determine if these commands
+            align with the steps required to complete the user''s request.
+
+
+            3. **Evaluate SSH Output**: Examine the SSH output, which represents the
+            system''s response to the SSH input. Check if the output indicates that
+            the task has been successfully executed or if there are any errors or
+            incomplete steps.
+
+
+            4. **Compare and Decide**: Compare the SSH input and output against the
+            user''s request. If the SSH input and output collectively demonstrate
+            that the task has been fully executed without errors, output "true". Otherwise,
+            output "false".
+
+
+            5. **Output Format**: Ensure that your output is a single word, either
+            "true" or "false", without any additional text or XML tags.
+
+
+            </instruction>
+
+
+            <examples>
+
+            Here are three examples to illustrate how the task should be completed:
+
+
+            <example>
+
+            User Request: Install the latest version of Python on the server.
+
+            SSH Input: sudo apt-get update && sudo apt-get install python3
+
+            SSH Output: Reading package lists... Done. Building dependency tree...
+            Done. python3 is already the newest version (3.8.10-0ubuntu1~20.04).
+
+            Output: true
+
+            </example>
+
+
+            <example>
+
+            User Request: Create a new directory named "projects" in the home directory.
+
+            SSH Input: mkdir ~/projects
+
+            SSH Output: mkdir: cannot create directory ‘/home/user/projects’: File
+            exists
+
+            Output: false
+
+            </example>
+
+
+            <example>
+
+            User Request: Restart the Apache web server.
+
+            SSH Input: sudo systemctl restart apache2
+
+            SSH Output: Failed to restart apache2.service: Unit apache2.service not
+            found.
+
+            Output: false
+
+            </example>
+
+            </examples>'
+        - role: user
+          text: '<use_query>{{#sys.query#}}</use_query>
+
+            <last_ssh_input>{{#conversation.ssh_input#}}</last_ssh_input>
+
+            <last_ssh_output>{{#conversation.ssh_output#}}</last_ssh_output>'
+        selected: false
+        title: LLM 4
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 90
+      id: '1741780349167'
+      parentId: '1741780220538'
+      position:
+        x: 1205.5376192323656
+        y: 168.9665381593
+      positionAbsolute:
+        x: 2248.5945716618216
+        y: 398.78158585224605
       selected: false
       sourcePosition: right
       targetPosition: left
       type: custom
       width: 244
+      zIndex: 1002
+    - data:
+        desc: ''
+        isInIteration: false
+        isInLoop: true
+        loop_id: '1741780220538'
+        selected: false
+        template: '{{ arg1 }}'
+        title: Template
+        type: template-transform
+        variables:
+        - value_selector:
+          - '1741780255549'
+          - json
+          variable: arg1
+      height: 54
+      id: '1741780379632'
+      parentId: '1741780220538'
+      position:
+        x: 829.529101741656
+        y: 86.15128775897529
+      positionAbsolute:
+        x: 1872.586054171112
+        y: 315.96633545192134
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+      zIndex: 1002
+    - data:
+        desc: ''
+        isInIteration: false
+        isInLoop: true
+        items:
+        - input_type: variable
+          operation: over-write
+          value:
+          - '1741780379632'
+          - output
+          variable_selector:
+          - conversation
+          - ssh_output
+          write_mode: over-write
+        - input_type: variable
+          operation: over-write
+          value:
+          - '1741780838558'
+          - text
+          variable_selector:
+          - conversation
+          - ssh_input
+          write_mode: over-write
+        loop_id: '1741780220538'
+        selected: false
+        title: Variable Assigner
+        type: assigner
+        version: '2'
+      height: 116
+      id: '1741780603482'
+      parentId: '1741780220538'
+      position:
+        x: 833.5631717044928
+        y: 166.6976271894281
+      positionAbsolute:
+        x: 1876.6201241339488
+        y: 396.51267488237414
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+      zIndex: 1002
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: ''
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: deepseek-chat
+          provider: langgenius/deepseek/deepseek
+        prompt_template:
+        - id: 002bbaad-8f02-4c9e-83f1-538f951069cf
+          role: system
+          text: "<instruction>\nYou are tasked with responding to user requests based\
+            \ on the provided SSH input and output. Your response should directly\
+            \ address the user's request, utilizing the SSH input and output as context.\
+            \ Follow these steps to complete the task:\n\n1. **Understand the User\
+            \ Request**: Carefully read the user's request to determine what information\
+            \ or action they are seeking. Pay attention to any specific details or\
+            \ requirements mentioned.\n\n2. **Analyze the SSH Input and Output**:\
+            \ Review the SSH input and output provided. Identify relevant information,\
+            \ commands, or results that relate to the user's request. Note any errors,\
+            \ warnings, or successful outputs that may be pertinent.\n\n3. **Formulate\
+            \ a Response**: Based on the user's request and the SSH input/output,\
+            \ craft a clear and concise response. Ensure that your response directly\
+            \ addresses the user's query and provides any necessary information or\
+            \ guidance. If the SSH output contains errors or issues, explain them\
+            \ and suggest potential solutions.\n\n4. **Avoid XML Tags in Output**:\
+            \ Ensure that your final response does not contain any XML tags. The output\
+            \ should be plain text, formatted for readability.\n\n5. **Review and\
+            \ Refine**: Before finalizing your response, review it to ensure it is\
+            \ accurate, relevant, and free of unnecessary information. Make sure it\
+            \ aligns with the user's request and the context provided by the SSH input/output.\n\
+            \n</instruction>\n\n<examples>\n<example>\n<user_request>\nCheck if the\
+            \ server is running and provide the status of the Apache service.\n</user_request>\n\
+            <ssh_input>\nsystemctl status apache2\n</ssh_input>\n<ssh_output>\n● apache2.service\
+            \ - The Apache HTTP Server\n   Loaded: loaded (/lib/systemd/system/apache2.service;\
+            \ enabled; vendor preset: enabled)\n   Active: active (running) since\
+            \ Tue 2023-10-10 12:34:56 UTC; 5min ago\n</ssh_output>\n<response>\nThe\
+            \ Apache service is currently active and running on the server. It has\
+            \ been running since Tue 2023-10-10 12:34:56 UTC.\n</response>\n</example>\n\
+            \n<example>\n<user_request>\nFind out why the SSH connection to the server\
+            \ is failing.\n</user_request>\n<ssh_input>\nssh user@server\n</ssh_input>\n\
+            <ssh_output>\nssh: connect to host server port 22: Connection refused\n\
+            </ssh_output>\n<response>\nThe SSH connection to the server is failing\
+            \ because the connection to port 22 is being refused. This could be due\
+            \ to the SSH service not running on the server, a firewall blocking the\
+            \ connection, or the server being down. Please check the server's status\
+            \ and ensure that the SSH service is running.\n</response>\n</example>\n\
+            \n<example>\n<user_request>\nVerify if the latest security patches have\
+            \ been applied to the server.\n</user_request>\n<ssh_input>\napt list\
+            \ --upgradable\n</ssh_input>\n<ssh_output>\nListing... Done\n</ssh_output>\n\
+            <response>\nThere are no packages available for upgrade, which indicates\
+            \ that the latest security patches have already been applied to the server.\n\
+            </response>\n</example>\n</examples>"
+        - role: user
+          text: '<use_query>{{#sys.query#}}</use_query>
+
+            <last_ssh_input>{{#conversation.ssh_input#}}</last_ssh_input>
+
+            <last_ssh_output>{{#conversation.ssh_output#}}</last_ssh_output>'
+        selected: false
+        title: answer
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 90
+      id: '1741780669933'
+      position:
+        x: 2670.2199680285826
+        y: 229.81504769294605
+      positionAbsolute:
+        x: 2670.2199680285826
+        y: 229.81504769294605
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: ''
+        isInIteration: false
+        isInLoop: true
+        loop_id: '1741780220538'
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: deepseek-chat
+          provider: langgenius/deepseek/deepseek
+        prompt_template:
+        - id: 069b2a14-82c1-410b-8fd3-730fcd928c48
+          role: system
+          text: '<instruction>
+
+            You are tasked with generating Linux commands based on user requests and
+            the results of the previous SSH command execution. Follow these steps
+            to complete the task:
+
+
+            1. **Understand the User Request**: Carefully analyze the user''s request
+            to determine the specific action or operation they want to perform on
+            the Linux system. This could include file manipulation, system monitoring,
+            process management, or any other Linux-related task.
+
+
+            2. **Review Previous SSH Execution Results**: Examine the output from
+            the previous SSH command execution. This output may contain information
+            such as file paths, process IDs, system status, or error messages that
+            are relevant to the current task.
+
+
+            3. **Generate the Appropriate Linux Command**: Based on the user request
+            and the previous SSH execution results, formulate the correct Linux command.
+            Ensure that the command is precise and directly addresses the user''s
+            needs. Do not include any SSH command or unrelated content in the output.
+
+
+            4. **Output the Command**: Provide the generated Linux command as the
+            output. The output should be a single line of text representing the command,
+            without any additional explanations, XML tags, or extraneous information.
+
+
+            5. **Ensure Clarity and Accuracy**: Double-check the generated command
+            to ensure it is accurate and will perform the intended action on the Linux
+            system. Avoid any ambiguity or potential errors in the command syntax.
+
+
+            Remember, the output should only contain the Linux command and nothing
+            else. Do not include any XML tags or additional text in the output.
+
+            </instruction>
+
+
+            <examples>
+
+            <example>
+
+            <input>
+
+            User Request: List all files in the /var/log directory.
+
+            Previous SSH Execution Result: No specific result, just a successful login.
+
+            </input>
+
+            <output>
+
+            ls /var/log
+
+            </output>
+
+            </example>
+
+
+            <example>
+
+            <input>
+
+            User Request: Check the status of the Apache service.
+
+            Previous SSH Execution Result: The service is installed but not running.
+
+            </input>
+
+            <output>
+
+            systemctl status apache2
+
+            </output>
+
+            </example>
+
+
+            <example>
+
+            <input>
+
+            User Request: Kill the process with PID 1234.
+
+            Previous SSH Execution Result: The process is running and consuming high
+            CPU.
+
+            </input>
+
+            <output>
+
+            kill 1234
+
+            </output>
+
+            </example>
+
+            </examples>'
+        - id: 874c2fb5-3993-4772-b1af-946ad5b314f1
+          role: user
+          text: '<use_query>{{#sys.query#}}</use_query>
+
+            <last_ssh_input>{{#conversation.ssh_input#}}</last_ssh_input>
+
+            <last_ssh_output>{{#conversation.ssh_output#}}</last_ssh_output>'
+        selected: false
+        title: command generator
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 90
+      id: '1741780838558'
+      parentId: '1741780220538'
+      position:
+        x: 128
+        y: 68
+      positionAbsolute:
+        x: 1171.056952429456
+        y: 297.81504769294605
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+      zIndex: 1002
     viewport:
-      x: -658.965055320707
-      y: 38.59236485753371
-      zoom: 1.2869892473012692
+      x: -2068.5914016326924
+      y: 249.21046408352586
+      zoom: 0.9025007274624289
