@@ -3,15 +3,15 @@ type: plugin
 author: stvlynn
 name: ssh
 label:
-  en_US: SSH Command Execution
-  ja_JP: SSHコマンド実行
-  zh_Hans: SSH命令执行
-  pt_BR: Execução de Comando SSH
+  en_US: SSH Tools
+  ja_JP: SSHツール
+  zh_Hans: SSH工具
+  pt_BR: Ferramentas SSH
 description:
-  en_US: Execute commands on remote servers via SSH using password or key-based authentication.
-  ja_JP: パスワードまたは鍵ベースの認証を使用して、SSHを介してリモートサーバーでコマンドを実行します。
-  zh_Hans: 通过SSH使用密码或密钥认证在远程服务器上执行命令。
-  pt_BR: Execute comandos em servidores remotos via SSH usando autenticação por senha ou chave.
+  en_US: Execute commands and transfer files on remote servers via SSH using password or key-based authentication.
+  ja_JP: パスワードまたは鍵ベースの認証を使用して、SSHを介してリモートサーバーでコマンドを実行し、ファイルを転送します。
+  zh_Hans: 通过SSH使用密码或密钥认证在远程服务器上执行命令和传输文件。
+  pt_BR: Execute comandos e transfira arquivos em servidores remotos via SSH usando autenticação por senha ou chave.
 icon: icon.svg
 resource:
   memory: 268435456

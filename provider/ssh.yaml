@@ -2,16 +2,18 @@ identity:
   author: stvlynn
   name: ssh
   label:
-    en_US: ssh
-    zh_Hans: ssh
-    pt_BR: ssh
+    en_US: SSH Tools
+    zh_Hans: SSH工具
+    pt_BR: Ferramentas SSH
   description:
-    en_US: ssh
-    zh_Hans: ssh
-    pt_BR: ssh
+    en_US: Execute commands and transfer files via SSH
+    zh_Hans: 通过SSH执行命令和传输文件
+    pt_BR: Execute comandos e transfira arquivos via SSH
   icon: icon.svg
 tools:
   - tools/ssh.yaml
+  - tools/ssh_file_upload.yaml
+  - tools/ssh_file_download.yaml
 extra:
   python:
     source: provider/ssh.py
