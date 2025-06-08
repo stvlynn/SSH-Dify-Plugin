@@ -68,8 +68,13 @@ class SshTool(Tool):
                     timeout=10
                 )
                 
+            # 构造带环境配置的命令
+            env_cmd = f'source ~/.zshrc && export PATH="$PATH:/usr/local/bin" && {command}'
+            # env_cmd = f'zsh -l -c "{command}"'
+            # env_cmd = f'source ~/.bashrc && export PATH="$PATH:/usr/local/bin" && {command}'
+
             # 执行命令
-            stdin, stdout, stderr = client.exec_command(command)
+            stdin, stdout, stderr = client.exec_command(env_cmd)
             
             # 获取输出
             stdout_str = stdout.read().decode('utf-8')
