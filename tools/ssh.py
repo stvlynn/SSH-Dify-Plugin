@@ -10,7 +10,6 @@ from dify_plugin.entities.tool import ToolInvokeMessage
 
 class SshTool(Tool):
     def _invoke(self, tool_parameters: dict[str, Any]) -> Generator[ToolInvokeMessage]:
-        # 提取参数
         host = tool_parameters.get('host')
         port = int(tool_parameters.get('port', 22))
         username = tool_parameters.get('username')
@@ -20,14 +19,12 @@ class SshTool(Tool):
         passphrase = tool_parameters.get('passphrase')
         command = tool_parameters.get('command')
         
-        # 验证必要参数
         if not host or not username or not command:
             yield self.create_json_message({
                 "error": "Missing required parameters: host, username, and command are required."
             })
             return
             
-        # 验证认证参数
         if auth_type == 'password' and not password:
             yield self.create_json_message({
                 "error": "Password is required for password authentication."
@@ -40,11 +37,9 @@ class SshTool(Tool):
             return
             
         try:
-            # 创建SSH客户端
             client = paramiko.SSHClient()
             client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
             
-            # 根据认证类型连接
             if auth_type == 'password':
                 client.connect(
                     hostname=host,
@@ -55,10 +50,32 @@ class SshTool(Tool):
                 )
             else:  # key authentication
                 key_file = io.StringIO(private_key)
-                if passphrase:
-                    pkey = paramiko.RSAKey.from_private_key(key_file, password=passphrase)
-                else:
-                    pkey = paramiko.RSAKey.from_private_key(key_file)
+                password_arg = passphrase if passphrase else None
+                pkey = None
+                last_key_error: Exception | None = None
+
+                key_classes: list[type] = []
+                for key_cls_name in ("Ed25519Key", "ECDSAKey", "RSAKey", "DSSKey", "DSAKey"):
+                    key_cls = getattr(paramiko, key_cls_name, None)
+                    if key_cls is not None and key_cls not in key_classes:
+                        key_classes.append(key_cls)
+
+                for key_cls in key_classes:
+                    key_file.seek(0)
+                    try:
+                        pkey = key_cls.from_private_key(key_file, password=password_arg)
+                        break
+                    except paramiko.PasswordRequiredException as e:
+                        last_key_error = e
+                        raise paramiko.SSHException("Passphrase is required for encrypted private key") from e
+                    except Exception as e:
+                        last_key_error = e
+                        continue
+
+                if pkey is None:
+                    if last_key_error is not None:
+                        raise paramiko.SSHException(f"Unsupported or invalid private key: {str(last_key_error)}") from last_key_error
+                    raise paramiko.SSHException("Unsupported or invalid private key type")
                 
                 client.connect(
                     hostname=host,
@@ -68,48 +85,61 @@ class SshTool(Tool):
                     timeout=10
                 )
                 
-            # 构造带环境配置的命令
-            env_cmd = f'source ~/.zshrc && export PATH="$PATH:/usr/local/bin" && {command}'
-            # env_cmd = f'zsh -l -c "{command}"'
-            # env_cmd = f'source ~/.bashrc && export PATH="$PATH:/usr/local/bin" && {command}'
+            env_cmd = (
+                'if [ -n "$ZSH_VERSION" ] && [ -f "$HOME/.zshrc" ]; then . "$HOME/.zshrc"; '
+                'elif [ -n "$BASH_VERSION" ] && [ -f "$HOME/.bashrc" ]; then . "$HOME/.bashrc"; '
+                'elif [ -f "$HOME/.profile" ]; then . "$HOME/.profile"; '
+                'fi; '
+                'export PATH="$PATH:/usr/local/bin"; '
+                f'{command}'
+            )
 
-            # 执行命令
             stdin, stdout, stderr = client.exec_command(env_cmd)
             
-            # 获取输出
-            stdout_str = stdout.read().decode('utf-8')
-            stderr_str = stderr.read().decode('utf-8')
+            stdout_bytes = stdout.read()
+            stderr_bytes = stderr.read()
+            exit_status = stdout.channel.recv_exit_status()
+
+            stdout_str = stdout_bytes.decode('utf-8', errors='replace')
+            stderr_str = stderr_bytes.decode('utf-8', errors='replace')
             
-            # 关闭连接
             client.close()
             
-            # 返回结果
             result = {
                 "stdout": stdout_str,
                 "stderr": stderr_str,
-                "success": True
+                "exit_status": exit_status,
+                "success": exit_status == 0
             }
             
             yield self.create_json_message(result)
             
-        except paramiko.AuthenticationException:
+        except paramiko.AuthenticationException as e:
             yield self.create_json_message({
                 "error": "Authentication failed. Please check your credentials.",
+                "detail": str(e),
+                "exception_type": e.__class__.__name__,
                 "success": False
             })
         except paramiko.SSHException as e:
             yield self.create_json_message({
                 "error": f"SSH error: {str(e)}",
+                "detail": str(e),
+                "exception_type": e.__class__.__name__,
                 "success": False
             })
         except socket.error as e:
             yield self.create_json_message({
                 "error": f"Connection error: {str(e)}",
+                "detail": str(e),
+                "exception_type": e.__class__.__name__,
                 "success": False
             })
         except Exception as e:
             yield self.create_json_message({
                 "error": f"Error: {str(e)}",
+                "detail": str(e),
+                "exception_type": e.__class__.__name__,
                 "traceback": traceback.format_exc(),
                 "success": False
             })
